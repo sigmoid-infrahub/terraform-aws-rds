@@ -1,0 +1,56 @@
+{
+    "resourceSpecId": "11111111-1111-4111-8111-111111111111",
+    "stableId": "main-rds",
+    "displayName": "Main RDS Instance",
+    "resourceType": "database.rds",
+    "vpcDependency": "required",
+    "status": "draft",
+    "inputs": {
+        "identifier": "sigmoid-main-db",
+        "engine": "postgres",
+        "engine_version": "15.4",
+        "instance_class": "db.t3.medium",
+        "allocated_storage": 100,
+        "storage_type": "gp3",
+        "db_subnet_group_name": "sigmoid-db-subnet-group",
+        "username": "dbadmin",
+        "password": "REDACTED",
+        "port": 5432,
+        "backup_retention_period": 14,
+        "deletion_protection": true,
+        "storage_encrypted": true,
+        "performance_insights_enabled": true,
+        "skip_final_snapshot": false
+    },
+    "inputSpecs": [
+        { "name": "identifier", "type": "string", "required": true },
+        { "name": "engine", "type": "string", "required": true },
+        { "name": "engine_version", "type": "string", "required": false },
+        { "name": "instance_class", "type": "string", "required": true },
+        { "name": "allocated_storage", "type": "number", "required": false, "default": 20 },
+        { "name": "storage_type", "type": "string", "required": false, "default": "gp3" },
+        { "name": "db_subnet_group_name", "type": "string", "required": true },
+        { "name": "vpc_security_group_ids", "type": "array", "required": false },
+        { "name": "multi_az", "type": "boolean", "required": false, "default": false },
+        { "name": "publicly_accessible", "type": "boolean", "required": false, "default": false },
+        { "name": "db_name", "type": "string", "required": false },
+        { "name": "username", "type": "string", "required": true },
+        { "name": "password", "type": "string", "required": true },
+        { "name": "port", "type": "number", "required": false },
+        { "name": "backup_retention_period", "type": "number", "required": false, "default": 7 },
+        { "name": "deletion_protection", "type": "boolean", "required": false, "default": false },
+        { "name": "storage_encrypted", "type": "boolean", "required": false, "default": true },
+        { "name": "kms_key_id", "type": "string", "required": false },
+        { "name": "performance_insights_enabled", "type": "boolean", "required": false, "default": false },
+        { "name": "skip_final_snapshot", "type": "boolean", "required": false, "default": false }
+    ],
+    "scope": {
+        "vpcId": "main-vpc"
+    },
+    "position": { "x": 400, "y": 300 },
+    "terraform": {
+        "module": {
+            "source": "../../terraform-modules/terraform-aws-rds"
+        }
+    }
+}
