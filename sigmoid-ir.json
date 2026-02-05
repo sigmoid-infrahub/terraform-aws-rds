@@ -7,52 +7,11 @@
     "resourceType": "database.rds",
     "vpcDependency": "required",
     "status": "draft",
-    "inputs": {
-        "identifier": "sigmoid-main-db",
-        "engine": "postgres",
-        "engine_version": "15.4",
-        "instance_class": "db.t3.medium",
-        "allocated_storage": 100,
-        "storage_type": "gp3",
-        "db_subnet_group_name": "sigmoid-db-subnet-group",
-        "username": "dbadmin",
-        "password": "REDACTED",
-        "port": 5432,
-        "backup_retention_period": 14,
-        "deletion_protection": true,
-        "storage_encrypted": true,
-        "performance_insights_enabled": true,
-        "skip_final_snapshot": false
-    },
-    "inputSpecs": [
-        { "name": "identifier", "type": "string", "required": true, "description": "RDS instance identifier" },
-        { "name": "engine", "type": "string", "required": true, "validation": { "enum": ["mysql", "postgres", "mariadb", "oracle-ee", "oracle-se2", "sqlserver-ee", "sqlserver-se", "sqlserver-ex", "sqlserver-web"] }, "description": "Database engine type" },
-        { "name": "engine_version", "type": "string", "required": false, "description": "Database engine version" },
-        { "name": "instance_class", "type": "string", "required": true, "description": "RDS instance class (e.g., db.t3.micro, db.r5.large)" },
-        { "name": "allocated_storage", "type": "number", "required": false, "default": 20, "validation": { "min": 20, "max": 65536 }, "description": "Allocated storage in GB" },
-        { "name": "storage_type", "type": "string", "required": false, "default": "gp3", "validation": { "enum": ["gp2", "gp3", "io1", "io2", "standard"] }, "description": "Storage type" },
-        { "name": "db_subnet_group_name", "type": "string", "required": true, "description": "DB subnet group name (required for VPC)" },
-        { "name": "vpc_security_group_ids", "type": "array", "required": false, "description": "List of VPC security group IDs" },
-        { "name": "multi_az", "type": "boolean", "required": false, "default": false, "description": "Enable Multi-AZ deployment" },
-        { "name": "publicly_accessible", "type": "boolean", "required": false, "default": false, "description": "Whether the instance is publicly accessible" },
-        { "name": "db_name", "type": "string", "required": false, "description": "Name of the initial database to create" },
-        { "name": "username", "type": "string", "required": true, "description": "Master username" },
-        { "name": "password", "type": "string", "required": true, "description": "Master password" },
-        { "name": "port", "type": "number", "required": false, "description": "Database port" },
-        { "name": "backup_retention_period", "type": "number", "required": false, "default": 7, "validation": { "min": 0, "max": 35 }, "description": "Backup retention period in days" },
-        { "name": "deletion_protection", "type": "boolean", "required": false, "default": false, "description": "Enable deletion protection" },
-        { "name": "storage_encrypted", "type": "boolean", "required": false, "default": true, "description": "Enable storage encryption" },
-        { "name": "kms_key_id", "type": "string", "required": false, "description": "KMS key ID for encryption" },
-        { "name": "performance_insights_enabled", "type": "boolean", "required": false, "default": false, "description": "Enable Performance Insights" },
-        { "name": "skip_final_snapshot", "type": "boolean", "required": false, "default": false, "description": "Skip final snapshot on deletion" }
-    ],
-    "scope": {
-        "vpcId": "main-vpc"
-    },
     "position": { "x": 400, "y": 300 },
     "terraform": {
         "module": {
-            "source": "../../terraform-modules/terraform-aws-rds"
+            "source": "github.com/sigmoid-hq/terraform-aws-rds",
+            "ref": "main"
         }
     }
 }
