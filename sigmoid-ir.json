@@ -13,5 +13,19 @@
             "source": "github.com/sigmoid-hq/terraform-aws-rds",
             "ref": "main"
         }
+    },
+    "pricing": {
+        "awsPricingLookup": {
+            "serviceCode": "AmazonRDS",
+            "unit": "hourly",
+            "quantityProperties": ["instance_count", "count"],
+            "quantityDefault": 1,
+            "filters": [
+                { "field": "location", "value": "${location}" },
+                { "field": "instanceType", "propertyKeys": ["instance_class", "instanceClass"] },
+                { "field": "databaseEngine", "defaultValue": "MySQL", "required": false },
+                { "field": "deploymentOption", "defaultValue": "Single-AZ", "required": false }
+            ]
+        }
     }
 }
