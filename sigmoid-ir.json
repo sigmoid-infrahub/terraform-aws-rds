@@ -26,6 +26,25 @@
                 { "field": "databaseEngine", "defaultValue": "MySQL", "required": false },
                 { "field": "deploymentOption", "defaultValue": "Single-AZ", "required": false }
             ]
+        },
+        "usageProfiles": {
+            "default": "medium",
+            "low": {
+                "instance_count": 1,
+                "count": 1
+            },
+            "medium": {
+                "instance_count": 2,
+                "count": 2
+            },
+            "high": {
+                "instance_count": 4,
+                "count": 4
+            },
+            "xhigh": {
+                "instance_count": 8,
+                "count": 8
+            }
         }
     }
 }
