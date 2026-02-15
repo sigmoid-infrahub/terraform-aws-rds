@@ -46,5 +46,11 @@
                 "count": 8
             }
         }
+    },
+    "easy": {
+        "alias": "Database",
+        "group": "data-database",
+        "priority": 10,
+        "allowedProperties": ["engine", "engine_version", "instance_class", "allocated_storage", "count", "instance_count"]
     }
 }
