@@ -76,8 +76,10 @@ resource "aws_iam_role_policy_attachment" "enhanced_monitoring" {
 resource "aws_cloudwatch_log_group" "this" {
   count = var.create_cloudwatch_log_group ? 1 : 0
 
-  name = "/aws/rds/${var.identifier}"
-  tags = local.resolved_tags
+  name              = "/aws/rds/${var.identifier}"
+  retention_in_days = var.log_retention_in_days
+  kms_key_id        = var.kms_key_id != null && var.kms_key_id != "" ? var.kms_key_id : null
+  tags              = local.resolved_tags
 }
 
 resource "aws_db_instance" "this" {
@@ -102,14 +104,20 @@ resource "aws_db_instance" "this" {
 
   port = var.port
 
-  backup_retention_period         = var.backup_retention_period
-  deletion_protection             = var.deletion_protection
-  storage_encrypted               = var.storage_encrypted
-  kms_key_id                      = var.kms_key_id
-  performance_insights_enabled    = var.performance_insights_enabled
-  skip_final_snapshot             = var.skip_final_snapshot
-  monitoring_role_arn             = local.monitoring_role_arn
-  enabled_cloudwatch_logs_exports = var.enabled_cloudwatch_logs_exports
+  backup_retention_period               = var.backup_retention_period
+  deletion_protection                   = var.enable_deletion_protection
+  storage_encrypted                     = var.storage_encrypted
+  kms_key_id                            = var.kms_key_id != null && var.kms_key_id != "" ? var.kms_key_id : null
+  performance_insights_enabled          = var.performance_insights_enabled
+  performance_insights_kms_key_id       = var.performance_insights_enabled && var.performance_insights_kms_key_id != "" ? var.performance_insights_kms_key_id : null
+  performance_insights_retention_period = var.performance_insights_enabled ? var.performance_insights_retention_period : null
+  iam_database_authentication_enabled   = var.iam_database_authentication_enabled
+  copy_tags_to_snapshot                 = var.copy_tags_to_snapshot
+  auto_minor_version_upgrade            = var.auto_minor_version_upgrade
+  ca_cert_identifier                    = var.ca_cert_identifier
+  skip_final_snapshot                   = var.skip_final_snapshot
+  monitoring_role_arn                   = local.monitoring_role_arn
+  enabled_cloudwatch_logs_exports       = var.enabled_cloudwatch_logs_exports
 
   tags = local.resolved_tags
 }

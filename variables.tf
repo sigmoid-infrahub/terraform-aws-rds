@@ -180,14 +180,62 @@ variable "storage_encrypted" {
 
 variable "kms_key_id" {
   type        = string
-  description = "KMS key ID"
-  default     = null
+  description = "KMS key ID for storage encryption. When empty, the AWS managed key is used"
+  default     = ""
 }
 
 variable "performance_insights_enabled" {
   type        = bool
   description = "Enable Performance Insights"
+  default     = true
+}
+
+variable "performance_insights_kms_key_id" {
+  type        = string
+  description = "KMS key ID for Performance Insights. When empty, the AWS managed key is used"
+  default     = ""
+}
+
+variable "performance_insights_retention_period" {
+  type        = number
+  description = "Performance Insights retention period in days"
+  default     = 7
+}
+
+variable "iam_database_authentication_enabled" {
+  type        = bool
+  description = "Enable IAM database authentication"
   default     = false
+}
+
+variable "log_retention_in_days" {
+  type        = number
+  description = "Retention in days for the created CloudWatch log group"
+  default     = 30
+}
+
+variable "copy_tags_to_snapshot" {
+  type        = bool
+  description = "Copy tags to snapshots"
+  default     = true
+}
+
+variable "auto_minor_version_upgrade" {
+  type        = bool
+  description = "Enable automatic minor version upgrades"
+  default     = true
+}
+
+variable "ca_cert_identifier" {
+  type        = string
+  description = "CA certificate identifier for the DB instance"
+  default     = "rds-ca-rsa2048-g1"
+}
+
+variable "enable_deletion_protection" {
+  type        = bool
+  description = "Enable deletion protection for the DB instance"
+  default     = true
 }
 
 variable "skip_final_snapshot" {
