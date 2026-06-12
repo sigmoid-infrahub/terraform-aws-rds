@@ -232,12 +232,6 @@ variable "ca_cert_identifier" {
   default     = "rds-ca-rsa2048-g1"
 }
 
-variable "enable_deletion_protection" {
-  type        = bool
-  description = "Enable deletion protection for the DB instance"
-  default     = true
-}
-
 variable "skip_final_snapshot" {
   type        = bool
   description = "Skip final snapshot"

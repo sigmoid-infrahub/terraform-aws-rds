@@ -105,7 +105,7 @@ resource "aws_db_instance" "this" {
   port = var.port
 
   backup_retention_period               = var.backup_retention_period
-  deletion_protection                   = var.enable_deletion_protection
+  deletion_protection                   = var.deletion_protection
   storage_encrypted                     = var.storage_encrypted
   kms_key_id                            = var.kms_key_id != null && var.kms_key_id != "" ? var.kms_key_id : null
   performance_insights_enabled          = var.performance_insights_enabled
