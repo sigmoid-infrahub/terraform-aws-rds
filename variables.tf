@@ -1,6 +1,16 @@
 variable "identifier" {
   type        = string
   description = "RDS identifier"
+
+  validation {
+    condition     = can(regex("^[a-z][a-z0-9-]*[a-z0-9]$", var.identifier)) && length(var.identifier) <= 63
+    error_message = "Identifier must start with a letter, contain only lowercase letters, numbers, and hyphens, not end with a hyphen, and be at most 63 characters."
+  }
+
+  validation {
+    condition     = !can(regex("--", var.identifier))
+    error_message = "Identifier cannot contain two consecutive hyphens."
+  }
 }
 
 variable "engine" {
@@ -23,6 +33,11 @@ variable "allocated_storage" {
   type        = number
   description = "Allocated storage (GB)"
   default     = 20
+
+  validation {
+    condition     = var.allocated_storage >= 20 && var.allocated_storage <= 65536
+    error_message = "Allocated storage must be between 20 and 65536 GB."
+  }
 }
 
 variable "storage_type" {
@@ -146,12 +161,32 @@ variable "username" {
   type        = string
   description = "Master username"
   sensitive   = true
+
+  validation {
+    condition     = can(regex("^[a-zA-Z][a-zA-Z0-9_]*$", var.username)) && length(var.username) >= 1 && length(var.username) <= 128
+    error_message = "Username must start with a letter, contain only letters, numbers, and underscores, and be 1-128 characters."
+  }
+
+  validation {
+    condition     = !contains(["admin", "postgres", "rdsadmin", "rds_superuser", "rds_replication", "rdsrepladmin"], lower(var.username))
+    error_message = "Cannot use reserved names: admin, postgres, rdsadmin, rds_superuser, rds_replication."
+  }
 }
 
 variable "password" {
   type        = string
   description = "Master password"
   sensitive   = true
+
+  validation {
+    condition     = length(var.password) >= 8 && length(var.password) <= 128
+    error_message = "Password must be between 8 and 128 characters."
+  }
+
+  validation {
+    condition     = !can(regex("[/@\"\\s]", var.password))
+    error_message = "Password cannot contain /, @, quotes, or spaces."
+  }
 }
 
 variable "port" {
