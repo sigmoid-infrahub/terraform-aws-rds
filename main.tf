@@ -30,11 +30,16 @@ resource "aws_security_group" "this" {
   description = "Security group for RDS ${var.identifier}"
   vpc_id      = var.vpc_id
 
-  ingress {
-    from_port   = var.engine == "postgres" ? 5432 : 3306
-    to_port     = var.engine == "postgres" ? 5432 : 3306
-    protocol    = "tcp"
-    cidr_blocks = var.security_group_ingress_cidr_blocks
+  dynamic "ingress" {
+    for_each = local.effective_ingress_rules
+    content {
+      from_port       = ingress.value.from_port
+      to_port         = ingress.value.to_port
+      protocol        = ingress.value.protocol
+      cidr_blocks     = ingress.value.cidr_blocks
+      security_groups = ingress.value.source_security_group_ids
+      description     = ingress.value.description
+    }
   }
 
   egress {

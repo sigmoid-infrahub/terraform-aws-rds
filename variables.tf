@@ -88,6 +88,19 @@ variable "security_group_ingress_cidr_blocks" {
   default     = ["10.0.0.0/8"]
 }
 
+variable "ingress_rules" {
+  type = list(object({
+    from_port                 = number
+    to_port                   = number
+    protocol                  = optional(string, "tcp")
+    cidr_blocks               = optional(list(string), [])
+    source_security_group_ids = optional(list(string), [])
+    description               = optional(string, null)
+  }))
+  description = "Explicit ingress rules for the created security group. When set (non-empty), these replace the default cidr-block ingress, enabling security-group-to-security-group narrowing."
+  default     = []
+}
+
 variable "create_parameter_group" {
   type        = bool
   description = "Whether to create a DB parameter group"
